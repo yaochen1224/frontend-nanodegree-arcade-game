@@ -50,10 +50,15 @@ Player.prototype.handleInput = function(input){
     this.x -= 50.5;
   } else if (input === 'right' && this.x < 505) {
     this.x += 50.5;
+<<<<<<< HEAD
   } else if (input === 'up' && this.y > 0) {
     this.y -= 41.5;
   } else if (input === 'down' && this.y <606) {
     this.y += 41.5;
+=======
+  } else if (input === 'up' && this.y > ) {
+
+>>>>>>> origin/master
   }
 }
 
