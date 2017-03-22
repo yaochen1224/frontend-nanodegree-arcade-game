@@ -34,8 +34,12 @@ var Player = function(x, y){
 }
 
 Player.prototype.handleInput = function(input){
-  if (input === 'left'){
-    this.x = 
+  if (input === 'left' && this.x > 0){
+    this.x -= 50.5;
+  } else if (input === 'right' && this.x < 505) {
+    this.x += 50.5;
+  } else if (input === 'up' && this.y > ) {
+
   }
 }
 
