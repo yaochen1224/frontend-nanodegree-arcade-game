@@ -10,7 +10,7 @@ var Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
 };
 
-// Update the enemy's position, required method for game
+// Update the enemy's position
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
@@ -26,12 +26,11 @@ Enemy.prototype.update = function(dt) {
         player.x + 37 > this.x &&
         player.y < this.y + 25 &&
         30 + player.y > this.y) {
-        player.x = 200;
-        player.y = 380;
+        player.reset();
     }
 };
 
-// Draw the enemy on the screen, required method for game
+// Draw the enemy on the screen
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -48,24 +47,24 @@ var Player = function(x, y){
 
 Player.prototype.handleInput = function(input){
   if (input === 'left' && this.x > 0){
-    this.x -= 50.5;
-  } else if (input === 'right' && this.x < 505) {
-    this.x += 50.5;
+    this.x -= 101;
+  } else if (input === 'right' && this.x < 354) {
+    this.x += 101;
   } else if (input === 'up' && this.y > 0) {
-    this.y -= 41.5;
-  } else if (input === 'down' && this.y <606) {
-    this.y += 41.5;
+    this.y -= 83;
+  } else if (input === 'down' && this.y <399) {
+    this.y += 83;
   }
 }
 
 Player.prototype.update = function(){
-  if( this.y < -18 ){
+  if( this.y < 0 ){
         this.reset();
       }
 };
 
 Player.prototype.reset = function(){
-    this.x = 250;
+    this.x = 200;
     this.y = 400;
 };
 
@@ -73,13 +72,19 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.player), this.x, this.y);
 };
 
+var Gem = function(x, y){
+  this.x = x;
+  this.y = y;
+  this.gem = ['images/Gem Blue.png','images/Gem Green.png', 'images/Gem Orange.png']
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
-var player = new Player(200,300);
+var player = new Player(200,400);
 
-var enemyPosition = [60, 140, 220];
+var enemyPosition = [60, 140, 220, 300];
 var enemy;
 
 enemyPosition.forEach(function(posY) {
