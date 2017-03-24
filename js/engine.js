@@ -26,7 +26,7 @@ var Engine = (function(global) {
         lastTime;
 
     canvas.width = 505;
-    canvas.height = 606;
+    canvas.height = 640;
     doc.body.appendChild(canvas);
 
     // ctx.strokeRect(0,0,canvas.width, canvas.height);
@@ -116,10 +116,9 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/stone-block.png',
-                'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/grass-block.png'
             ],
-            numRows = 7,
+            numRows = 6,
             numCols = 5,
             row, col;
 
@@ -153,6 +152,10 @@ var Engine = (function(global) {
          */
         allEnemies.forEach(function(enemy) {
             enemy.render();
+        });
+
+        allGems.forEach(function(gem) {
+            gem.render();
         });
 
         player.render();

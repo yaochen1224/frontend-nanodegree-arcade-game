@@ -1,3 +1,11 @@
+var rowPosition = [60, 140, 220, 300];
+var colPosition = [-2, 99, 200, 301, 402];
+var gemImage = ['images/Gem Blue.png','images/Gem Green.png', 'images/Gem Orange.png'];
+var getRandomInt = function(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -27,6 +35,7 @@ Enemy.prototype.update = function(dt) {
         player.y < this.y + 25 &&
         30 + player.y > this.y) {
         player.reset();
+        player.lives -= 1;
     }
 };
 
@@ -60,6 +69,8 @@ Player.prototype.handleInput = function(input){
 Player.prototype.update = function(){
   if( this.y < 0 ){
         this.reset();
+        gem.reset();
+        spawnGem();
       }
 };
 
@@ -69,14 +80,34 @@ Player.prototype.reset = function(){
 };
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.player), this.x, this.y);
+  ctx.drawImage(Resources.get(this.player), this.x, this.y);
 };
 
 var Gem = function(x, y){
   this.x = x;
   this.y = y;
-  this.gem = ['images/Gem Blue.png','images/Gem Green.png', 'images/Gem Orange.png']
+  this.gem = gemImage[getRandomInt(0,2)];
 }
+
+var spawnGem = function(){
+  var gemNumber = getRandomInt(0,4);
+  for (var i = 0; i <= gemNumber; i++){
+    var positionX = getRandomInt(0, 4);
+    var positionY = getRandomInt(0, 3);
+    var newGem = new Gem (colPosition[positionX],rowPosition[positionY]);
+    allGems.push(newGem);
+  }
+}
+
+Gem.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.gem), this.x, this.y);
+}
+
+Gem.prototype.reset = function() {
+  allGems = [];
+}
+
+var allGems = [];
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -84,12 +115,15 @@ var Gem = function(x, y){
 var allEnemies = [];
 var player = new Player(200,400);
 
-var enemyPosition = [60, 140, 220, 300];
-var enemy;
 
-enemyPosition.forEach(function(posY) {
+
+var enemy;
+spawnGem();
+
+rowPosition.forEach(function(posY) {
     enemy = new Enemy(0, posY, Math.floor((Math.random() * 100) + 100));
     allEnemies.push(enemy);
+
 });
 
 
