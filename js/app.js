@@ -1,11 +1,12 @@
-var rowPosition = [60, 140, 220, 300];
+var rowPosition = [60, 140, 220, 310];
 var colPosition = [-2, 99, 200, 301, 402];
 var gemImage = ['images/Gem Blue.png','images/Gem Green.png', 'images/Gem Orange.png'];
 var getRandomInt = function(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(Math.random() * (max - min)+1) + min;
 }
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
@@ -27,7 +28,8 @@ Enemy.prototype.update = function(dt) {
     this.x += this.speed * dt
     if (this.x > 550) {
        this.x = -100;
-       this.speed = 100 + Math.floor(Math.random() * 512);
+       this.y = rowPosition[getRandomInt(-1,3)]
+       this.speed = getRandomInt(100,520);
    }
 
    if (player.x < this.x + 60 &&
@@ -35,7 +37,9 @@ Enemy.prototype.update = function(dt) {
         player.y < this.y + 25 &&
         30 + player.y > this.y) {
         player.reset();
-        player.lives -= 1;
+        player.level -= 1;
+        resetEnemy();
+        spawnEnemy();
     }
 };
 
@@ -44,13 +48,25 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+var spawnEnemy = function(){
+  for (var i = 0; i < player.level; i +=2){
+    var positionY = getRandomInt(-1, 3);
+    var enemy = new Enemy (-100, rowPosition[positionY], getRandomInt(100,200));
+    //put them into the array
+    allEnemies.push(enemy);
+  }
+}
+
+var resetEnemy = function(){
+  allEnemies = [];
+}
+
+
+// player class
 var Player = function(x, y){
   this.x = x;
   this.y = y;
-  this.lives = 3;
+  this.level = 1;
   this.player = 'images/char-boy.png';
 }
 
@@ -71,6 +87,9 @@ Player.prototype.update = function(){
         this.reset();
         gemReset();
         spawnGem();
+        this.level += 1;
+        resetEnemy();
+        spawnEnemy();
       }
 };
 
@@ -83,20 +102,13 @@ Player.prototype.render = function() {
   ctx.drawImage(Resources.get(this.player), this.x, this.y);
 };
 
+
+// gem class
 var Gem = function(x, y){
   this.x = x;
   this.y = y;
+  // randomly generate different types of gems
   this.gem = gemImage[getRandomInt(0,2)];
-}
-
-var spawnGem = function(){
-  var gemNumber = getRandomInt(0,3);
-  for (var i = 0; i <= gemNumber; i++){
-    var positionX = getRandomInt(0, 4);
-    var positionY = getRandomInt(0, 3);
-    var newGem = new Gem (colPosition[positionX],rowPosition[positionY]);
-    allGems.push(newGem);
-  }
 }
 
 Gem.prototype.render = function() {
@@ -113,28 +125,35 @@ Gem.prototype.update = function() {
        }
 }
 
+var spawnGem = function(){
+  //randomly generate a certain number of gems
+  var gemNumber = getRandomInt(0,3);
+  for (var i = 0; i <= gemNumber; i++){
+    var positionX = getRandomInt(0, 4);
+    var positionY = getRandomInt(0, 3);
+    var newGem = new Gem (colPosition[positionX],rowPosition[positionY]);
+    //put them into the array
+    allGems.push(newGem);
+  }
+}
+
 var gemReset = function() {
   allGems = [];
 }
 
-var allGems = [];
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
+var allGems = [];
 var player = new Player(200,400);
-
-
-
 var enemy;
 spawnGem();
+spawnEnemy();
 
-rowPosition.forEach(function(posY) {
-    enemy = new Enemy(0, posY, Math.floor((Math.random() * 100) + 100));
-    allEnemies.push(enemy);
 
-});
 
 
 
