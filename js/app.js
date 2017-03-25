@@ -27,7 +27,7 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     this.x += this.speed * dt
     if (this.x > 550) {
-       this.x = -100;
+       this.x = -300;
        this.y = rowPosition[getRandomInt(-1,3)]
        this.speed = getRandomInt(100,520);
    }
