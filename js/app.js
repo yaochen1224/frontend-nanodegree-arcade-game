@@ -69,7 +69,7 @@ Player.prototype.handleInput = function(input){
 Player.prototype.update = function(){
   if( this.y < 0 ){
         this.reset();
-        gem.reset();
+        gemReset();
         spawnGem();
       }
 };
@@ -90,7 +90,7 @@ var Gem = function(x, y){
 }
 
 var spawnGem = function(){
-  var gemNumber = getRandomInt(0,4);
+  var gemNumber = getRandomInt(0,3);
   for (var i = 0; i <= gemNumber; i++){
     var positionX = getRandomInt(0, 4);
     var positionY = getRandomInt(0, 3);
@@ -103,7 +103,17 @@ Gem.prototype.render = function() {
   ctx.drawImage(Resources.get(this.gem), this.x, this.y);
 }
 
-Gem.prototype.reset = function() {
+Gem.prototype.update = function() {
+  if (player.x < this.x + 60 &&
+       player.x + 37 > this.x &&
+       player.y < this.y + 25 &&
+       30 + player.y > this.y) {
+         var index = allGems.indexOf(this);
+         allGems.splice(index, 1);
+       }
+}
+
+var gemReset = function() {
   allGems = [];
 }
 
