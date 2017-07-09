@@ -1,11 +1,18 @@
+'use strict'
+
 var rowPosition = [60, 140, 220, 310];
 var colPosition = [-2, 99, 200, 301, 402];
 var gemImage = ['images/Gem Blue.png','images/Gem Green.png', 'images/Gem Orange.png'];
+var LEFT_BORDER = 0;
+var RIGHT_BORDER = 354;
+var UP_BORDER = 399;
+var DOWN_BORDER = 0;
 var getRandomInt = function(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)+1) + min;
 }
+
 
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
@@ -38,8 +45,8 @@ Enemy.prototype.update = function(dt) {
         30 + player.y > this.y) {
         player.reset();
         player.level -= 1;
-        resetEnemy();
-        spawnEnemy();
+        Enemy.prototype.resetEnemy();
+        Enemy.prototype.spawnEnemy();
     }
 };
 
@@ -48,7 +55,7 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-var spawnEnemy = function(){
+Enemy.prototype.spawnEnemy = function(){
   for (var i = 0; i < player.level; i +=2){
     var positionY = getRandomInt(-1, 3);
     var enemy = new Enemy (-100, rowPosition[positionY], getRandomInt(100,200));
@@ -57,51 +64,9 @@ var spawnEnemy = function(){
   }
 }
 
-var resetEnemy = function(){
+Enemy.prototype.resetEnemy = function(){
   allEnemies = [];
 }
-
-
-// player class
-var Player = function(x, y){
-  this.x = x;
-  this.y = y;
-  this.level = 1;
-  this.player = 'images/char-boy.png';
-}
-
-Player.prototype.handleInput = function(input){
-  if (input === 'left' && this.x > 0){
-    this.x -= 101;
-  } else if (input === 'right' && this.x < 354) {
-    this.x += 101;
-  } else if (input === 'up' && this.y > 0) {
-    this.y -= 83;
-  } else if (input === 'down' && this.y <399) {
-    this.y += 83;
-  }
-}
-
-Player.prototype.update = function(){
-  if( this.y < 0 ){
-        this.reset();
-        gemReset();
-        spawnGem();
-        this.level += 1;
-        resetEnemy();
-        spawnEnemy();
-      }
-};
-
-Player.prototype.reset = function(){
-    this.x = 200;
-    this.y = 400;
-};
-
-Player.prototype.render = function() {
-  ctx.drawImage(Resources.get(this.player), this.x, this.y);
-};
-
 
 // gem class
 var Gem = function(x, y){
@@ -125,7 +90,7 @@ Gem.prototype.update = function() {
        }
 }
 
-var spawnGem = function(){
+Gem.prototype.spawnGem = function(){
   //randomly generate a certain number of gems
   var gemNumber = getRandomInt(0,3);
   for (var i = 0; i <= gemNumber; i++){
@@ -137,9 +102,52 @@ var spawnGem = function(){
   }
 }
 
-var gemReset = function() {
+Gem.prototype.gemReset = function() {
   allGems = [];
 }
+
+
+// player class
+var Player = function(x, y){
+  this.x = x;
+  this.y = y;
+  this.level = 1;
+  this.playerImage = 'images/char-boy.png';
+}
+
+Player.prototype.handleInput = function(input){
+  if (input === 'left' && this.x > LEFT_BORDER){
+    this.x -= 101;
+  } else if (input === 'right' && this.x < RIGHT_BORDER) {
+    this.x += 101;
+  } else if (input === 'up' && this.y > DOWN_BORDER) {
+    this.y -= 83;
+  } else if (input === 'down' && this.y <UP_BORDER) {
+    this.y += 83;
+  }
+}
+
+Player.prototype.update = function(){
+  if( this.y < 0 ){
+        this.reset();
+        Gem.prototype.gemReset();
+        Gem.prototype.spawnGem();
+        this.level += 1;
+        Enemy.prototype.resetEnemy();
+        Enemy.prototype.spawnEnemy();
+      }
+};
+
+Player.prototype.reset = function(){
+    this.x = 200;
+    this.y = 400;
+};
+
+Player.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.playerImage), this.x, this.y);
+};
+
+
 
 
 
@@ -150,8 +158,10 @@ var allEnemies = [];
 var allGems = [];
 var player = new Player(200,400);
 var enemy;
-spawnGem();
-spawnEnemy();
+
+Enemy.prototype.spawnEnemy();
+Gem.prototype.spawnGem();
+
 
 
 
