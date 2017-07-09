@@ -1,6 +1,14 @@
 frontend-nanodegree-arcade-game
 ===============================
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+# Classic Arcade Game Clone
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+[![N|Play This Game](http://www.microgamingonlinecasinos.org/wp-content/uploads/2013/05/Play-Now-Button.jpg)](https://yaochen1224.github.io/)
+
+Recreated the classic arcade game Frogger with provided visual by using JavaScript to add a number of entities to the game including player characters, enemies, collectable items and rules to level up and reset
+
+Features:
+  - Use up, down, left, right keyboard to control the character
+  - Your goal is to cross the field to the other side, while avoiding your enemies -- bugs
+  - In the meantime, try to collect as many gems as possible
+  - After successfully crossing the field, your character will be reset to start a new round, and you will face more enemies
